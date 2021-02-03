@@ -1,0 +1,84 @@
+{% load movie_tag %}
+<!-- HEADER -->
+<header class="header">
+    <div class="main-banner bg bg1" style="background-color: rgba(0, 0, 0, 0); margin-top: 0px;">
+        <div class="banner-info">
+            <p class="editContent" >Best movie Site</p>
+            <h3 class="mb-4 editContent">All about movies</h3>
+            <div class="ban-buttons">
+            </div>
+        </div>
+        <div class="header-div">
+            <div class="container-fluid">
+                <div class="row" style="height: 100%;">
+                    <div class="col-lg-4 col-md-5 col-sm-6 col-6">
+                        <div id="logo">
+                            <a href="{% url 'home' %}" class="editContent" style="cursor: inherit; color: rgb(255, 255, 255); font-size: 40px; background-color: rgba(0, 0, 0, 0); font-family: &quot;Source Sans Pro&quot;, sans-serif;">Movies</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7 col-sm-6 col-6">
+                    <div class="menu-block">
+                        <ul class="menu mt-2">
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url 'home' %}">Main</a></li>
+                                <li><a href="{% url 'logout' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Logout</a></li>
+                                <li><a href="{% url 'profile' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Profile</a></li>
+                            {% else %}
+                                <li><a href="{% url 'home' %}">Main</a></li>
+                                <li><a href="{% url 'login' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Login</a></li>
+                                <li><a href="{% url 'register' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="sidebarBtn">
+        <span></span>
+    </button>
+</header>
+<!-- HEADER ENDS -->
+<!-- MAIN CONTENT -->
+<main class="main">
+    <section class="movies">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                    <div class="movies-sidebar">
+                        <div class="movie-search">
+                            <h1 class="movie-search-h1">
+                                Movie Search
+                                <form action="{% url 'search' %}" method="get" class="movie-search-form">
+                                    <input type="search" name="q" placeholder="Enter name...">
+                                    <button class="btn1 btn" type="submit" ><span class="fas fa-search" aria-hidden="true" ></span></button>
+                                </form>
+                            </h1>
+                        </div>
+                        <div class="movie-genres mt-3">
+                            <h1 class="movie-search-h1">
+                                Genres
+                            </h1>
+                            <ul class="movie-genres-ul mt-2">
+                                <form action="{% url 'filter' %}" method="get" name="filter">
+                                    {% for genre in view.get_genres %}
+                                        <li><input type="checkbox" name="genre" value="{{ genre.id }}"><h3>{{ genre.name }}</h3></li>
+                                    {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="movie-years mt-3">
+                                        <h1 class="movie-search-h1">
+                                            Years
+                                        </h1>
+                                        <ul class="movie-years-ul mt-2">
+                                            {% for movie in view.get_years %}
+                                                <li><input type="checkbox" name="year" value="{{ movie.year }}"><h3>{{ movie.year }}</h3></li>
+                                            {% endfor %}
+                                    <button type="submit" class="find mt-3">Find</button>
+                                </form>
+                            </ul>
+                        </div>
+                        {% get_last_movies %}
+                    </div>
+                </div>

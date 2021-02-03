@@ -1,0 +1,11 @@
+<div class="movie-lasts mt-3">
+    <h1 class="movie-search-h1">
+        Last Added
+    </h1>
+    {% for movie in last_movies %}
+    <div class="movie-last my-3">
+        <img src="{{ movie.poster.url }}" width="80px" height="110px">
+        <h3><a href="{% url 'movie_detail' movie.slug %}" style="text-decoration: none; color: #000000;">{{ movie.title }}</a></h3>
+    </div>
+    {% endfor %}
+</div>

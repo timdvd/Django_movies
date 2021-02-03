@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="col-xl-8 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="row">
+    <div class="col-lg-4 col-md-12 col-sm-12 col-12 ml-auto mr-auto">
+        <div class="movie-image-main">
+            <img src="{{ actor.image.url }}" alt="Actor Image">
+        </div>
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-8 col-12 ml-auto mr-auto">
+        <div class="movie-desc-main">
+            <h1 class="movie-desc-main-h1">{{ actor.name }}</h1>
+            <h3 class="movie-desc-main-h3 mt-2"><span>Age:</span> {{ actor.age }}</h3>
+            <h3 class="movie-desc-main-h3"><span>Country:</span> {{ movie.country }}</h3>
+        </div>
+    </div>
+    <div class="col-xl-12 col-lg-12 col-md-10 col-sm-12 col-12">
+        <h1 class="movie-desc-main-h1 mt-5">About {{ actor.name }}</h1>
+        <p class="movie-short-desc mt-3 mb-3">
+            {{ actor.description|safe }}
+        </p>
+        {% if actor.film_director.all %}
+        <h3 class="movie-desc-main-h1">As Director:</h3>
+        <div class="row film-slider mt-2 mb-2">
+            {% for movie in actor.film_director.all %}
+            <div class="col-lg-4 col-md-6 col-sm-6 col-8 mr-auto ml-auto">
+                <div class="movie-block">
+                    <div class="movie-block-image">
+                        <img src="{{ movie.poster.url }}" alt="poster" class="poster">
+                    </div>
+                    <div class="movie-block-title">
+                        <h1><a href="{% url 'movie_detail' movie.slug %}">{{ movie.title }}</a></h1>
+                    </div>
+                    <div class="movie-block-slogan">
+                        <h3><span><i class="fas fa-angle-double-left"></i></span> {{ movie.tagline }} <span><i class="fas fa-angle-double-right"></i></span></h3>
+                        <ul class="movie-block-stars">
+                            <li><i class="fas fa-star"></i></li>
+                            <li><i class="fas fa-star"></i></li>
+                            <li><i class="fas fa-star"></i></li>
+                            <li><i class="fas fa-star-half-alt"></i></li>
+                            <li><i class="far fa-star"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if actor.film_actor.all %}
+        <h3 class="movie-desc-main-h1">As Actor:</h3>
+        <div class="row film-slider mt-2 mb-2">
+            {% for movie in actor.film_actor.all %}
+            <div class="col-lg-4 col-md-6 col-sm-6 col-8 mr-auto ml-auto">
+                <div class="movie-block">
+                    <div class="movie-block-image">
+                        <img src="{{ movie.poster.url }}" alt="poster" class="poster">
+                    </div>
+                    <div class="movie-block-title">
+                        <h1><a href="{% url 'movie_detail' movie.slug %}">{{ movie.title }}</a></h1>
+                    </div>
+                    <div class="movie-block-slogan">
+                        <h3><span><i class="fas fa-angle-double-left"></i></span> {{ movie.tagline }} <span><i class="fas fa-angle-double-right"></i></span></h3>
+                        <ul class="movie-block-stars">
+                            <li><i class="fas fa-star"></i></li>
+                            <li><i class="fas fa-star"></i></li>
+                            <li><i class="fas fa-star"></i></li>
+                            <li><i class="fas fa-star-half-alt"></i></li>
+                            <li><i class="far fa-star"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

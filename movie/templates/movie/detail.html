@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load humanize %}
+<div class="col-xl-8 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="row">
+    <div class="col-lg-4 col-md-12 col-sm-12 col-12 ml-auto mr-auto">
+        <div class="movie-image-main">
+            <img src="{{ movie.poster.url }}" alt="terminator">
+        </div>
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-8 col-12 ml-auto mr-auto">
+        <div class="movie-desc-main">
+            <h1 class="movie-desc-main-h1">{{ movie.title }}</h1>
+            <h3 class="movie-desc-main-h3 mt-2"><span>Year:</span> {{ movie.year }}</h3>
+            <h3 class="movie-desc-main-h3"><span>Country:</span> {{ movie.country }}</h3>
+            <h3 class="movie-desc-main-h3"><span>Slogan:</span>
+                {% if movie.tagline %}
+                    <i class="fas fa-angle-double-left"></i>{{ movie.tagline }}<i class="fas fa-angle-double-right"></i>
+                {% else %}
+                    No Slogan
+                {% endif %}
+            </h3>
+            <h3 class="movie-desc-main-h3"><span>Director:</span> 
+                {% for director in movie.directors.all %}
+                    <a href="{% url 'actor_detail' director.slug %}">{{ director.name }}</a>,
+                {% endfor %}
+            </h3>
+            <h3 class="movie-desc-main-h3"><span>Actors:</span>                                     
+                {% for actor in movie.actors.all %}
+                    <a href="{% url 'actor_detail' actor.slug %}">{{ actor.name }}</a>,
+                {% endfor %}
+            </h3>
+            <h3 class="movie-desc-main-h3"><span>Genre:</span>                                     
+                {% for genre in movie.genre.all %}
+                    {{ genre.name }},
+                {% endfor %}
+            </h3>
+            <h3 class="movie-desc-main-h3"><span>World release:</span> 23 October 2019</h3>
+            <h3 class="movie-desc-main-h3"><span>Budget:</span> ${{ movie.budget }}</h3>
+            <h3 class="movie-desc-main-h3"><span>USA income:</span> ${{ movie.fees_in_usa }}</h3>
+            <h3 class="movie-desc-main-h3"><span>World income:</span> ${{ movie.fees_in_world }}</h3>
+            <h3 class="movie-desc-main-h3"><span>Rating</span></h3>
+<form class="rating-star"  action="{% url 'add_rating' %}" method="post" name="rating">
+    {% csrf_token %}
+    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+    <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+    <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+    <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+    <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+    <input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+</form>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-10 col-sm-12 col-12">
+                            <h1 class="movie-desc-main-h1 mt-5">About {{ movie.title }}</h1>
+                            <ul class="film-shots mt-5 mb-2">
+                                {% if movie.movieshots_set %}
+                                    {% for image in movie.movieshots_set.all %}
+                                        <li><img src="{{ image.image.url }}" alt="{{ image.description }}" width="200px" height="140px"></li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                            <p class="movie-short-desc mt-3 mb-3">
+                                {{ movie.description|safe }}
+                            </p>
+                            <div class="comments mt-5">
+                                <span class="comvalue mt-2 mb-2">{{ movie.review_set.count }}</span>
+                                {% if user.is_authenticated %}
+                                <div class="comment-form">
+                                    <h1>Leave your comment</h1>
+                                    <form action="{% url 'PostComment' %}" method="POST" id="formReview" class="your-comment">
+                                        {% csrf_token %}
+                                            <label for="comment mb-2" id="comment-label">Your Comment*</label>
+                                            <textarea name="text" id="comment" rows="10" class="form-control">
+                                            </textarea>
+                                            {{ form.captcha }}
+                                            <input type="hidden" name="movieId" value="{{ movie.id }}">
+                                            <button class="btn-success send-btn mt-3" type="submit">Submit</button>
+                                    </form>
+
+                                </div>
+                                {% else %}
+                                <h2 style="font-size: 36px; font-family: 'Source Sans Pro', sans-serif; line-height: 56px;">Login To Write Review</h2>
+                                <div class="comment-login mt-5">
+                                    <div class="cm-login mb-4">
+                                        <a class="ml-1 " href="{% url 'login' %}">Login</a>
+                                    </div>
+                                    <div class="cm-login mb-4 ml-5">
+                                        <a class="ml-1" href="{% url 'register' %}">Register</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% for review in movie.get_review %}
+                                <div class="card mt-5" style="border: none; padding: 0;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4">
+                                                <img src="{{ review.user.profile.image.url }}" class="img rounded-circle img-fluid"/>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-12">
+                                                <div class="clearfix"></div>
+                                                <p><a href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong class="comment-block-text-h3"> {{ review.user.username }}<span class="timestamp">{{ review.timestamp | naturaltime }}</span></strong></a></p>
+                                                <p class="comment-block-text-p">{{ review.text }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

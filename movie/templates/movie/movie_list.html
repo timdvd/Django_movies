@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-lg-9 col-md-8 col-sm-12 col-12 left-display">
+    <div class="row">
+        {% for movie in movie_list %}
+        <div class="col-lg-4 col-md-6 col-sm-6 col-8 mr-auto ml-auto">
+            <div class="movie-block">
+                <div class="movie-block-image">
+                    <img src="{{ movie.poster.url }}" alt="poster" class="poster">
+                </div>
+                <div class="movie-block-title">
+                    <h1><a href="{% url 'movie_detail' movie.slug %}">{{ movie.title }}</a></h1>
+                </div>
+                <div class="movie-block-slogan">
+                    <h3><span><i class="fas fa-angle-double-left"></i></span> {{ movie.tagline }} <span><i class="fas fa-angle-double-right"></i></span></h3>
+                    <ul class="movie-block-stars">
+                        <li><i class="fas fa-star"></i></li>
+                        <li><i class="fas fa-star"></i></li>
+                        <li><i class="fas fa-star"></i></li>
+                        <li><i class="fas fa-star-half-alt"></i></li>
+                        <li><i class="far fa-star"></i></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
